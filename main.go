@@ -75,7 +75,6 @@ func nextIteration(width, height int) {
 
 	price, err := getPrice()
 	if err == nil {
-		log.Println(len(arr), price)
 		if len(arr) > 0 && price != arr[len(arr)-1] || len(arr) == 0 {
 			arr = append(arr, price)
 			fmt.Printf("\x1b[0;0H56.36 * 10000 + 56.53 * 10000 + %.2f * %.2f = %s ", price, val, formatNumber(fixedpart+price*val, " "))
@@ -85,7 +84,6 @@ func nextIteration(width, height int) {
 			}
 			lastprice := arr[0]
 			for i, e := range arr {
-				log.Println("lastprices", i, e, lastprice)
 				if i > last {
 					if e > lastprice {
 						fmt.Printf("\x1b[48;05;34m%s\x1b[0m", string(8593))
@@ -125,7 +123,6 @@ func getPrice() (price float64, err error) {
 			} else {
 				path := xmlpath.MustCompile(`//*[@id="online"]/div[2]/div/div/div[2]/div[4]`)
 				if value, ok := path.String(xmlroot); ok {
-					log.Println("Found:", value)
 					price, _ = strconv.ParseFloat(value, 64)
 				} else {
 					err = errors.New("xml parse error, wrong xpath")
