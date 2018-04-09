@@ -99,8 +99,6 @@ func nextIteration(width, height int) {
 				str := base64.StdEncoding.EncodeToString(image.Bytes())
 				fmt.Printf("\x1b[%d;%dH\x1b]1337;File=name=none;size=%d;inline=1:%s\a", 5, 0, len(str), str)
 			}
-		} else {
-			log.Println("freeze")
 		}
 	}
 }
