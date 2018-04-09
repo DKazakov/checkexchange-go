@@ -193,8 +193,8 @@ func render(imageWidth, imageHeight int) *bytes.Buffer {
 				FontSize: 7.0,
 			},
 			Range: &chart.ContinuousRange{
-				Max: max + .5,
-				Min: min - .5,
+				Max: max + .1,
+				Min: min - .1,
 			},
 		},
 		YAxisSecondary: chart.YAxis{
@@ -203,8 +203,8 @@ func render(imageWidth, imageHeight int) *bytes.Buffer {
 				FontSize: 7.0,
 			},
 			Range: &chart.ContinuousRange{
-				Max: max + .5,
-				Min: min + .5,
+				Max: max + .1,
+				Min: min + .1,
 			},
 		},
 		Series: series,
