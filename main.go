@@ -106,7 +106,7 @@ func nextIteration(width, height int) {
 			}
 		}
 	}
-	fmt.Printf("\x1b[3;0Hlast request: %s, last update: %s", lastupdate, lastrequest)
+	fmt.Printf("\x1b[3;0Hlast request: %s, last update: %s", lastrequest, lastupdate)
 }
 
 func getPrice() (price float64, err error) {
