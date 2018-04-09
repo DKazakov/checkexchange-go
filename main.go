@@ -19,7 +19,10 @@ import (
 	"time"
 )
 
-var arr []float64
+var (
+	arr                     []float64
+	lastupdate, lastrequest string
+)
 
 func main() {
 	f, _ := os.OpenFile("/var/log/self/checkexchange.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
@@ -74,8 +77,10 @@ func nextIteration(width, height int) {
 	)
 
 	price, err := getPrice()
+	lastrequest = time.Now().Format("15:04:05")
 	if err == nil {
 		if len(arr) > 0 && price != arr[len(arr)-1] || len(arr) == 0 {
+			lastupdate = time.Now().Format("15:04:05")
 			arr = append(arr, price)
 			fmt.Printf("\x1b[0;0H56.36 * 10000 + 56.53 * 10000 + %.2f * %.2f = %s ", price, val, formatNumber(fixedpart+price*val, " "))
 			last := 0
@@ -101,6 +106,7 @@ func nextIteration(width, height int) {
 			}
 		}
 	}
+	fmt.Printf("\x1b[3;0Hlast request: %s, last update: %s", lastupdate, lastrequest)
 }
 
 func getPrice() (price float64, err error) {
