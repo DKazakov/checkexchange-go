@@ -21,6 +21,7 @@ import (
 
 var (
 	arr                     []float64
+	date                    []float64
 	lastupdate, lastrequest string
 )
 
@@ -71,17 +72,19 @@ loop:
 
 func nextIteration(width, height int) {
 	const (
-		limit     = 5
+		limit     = 1
 		fixedpart = 1128900.0
 		val       = 10266.7
 	)
 
 	price, err := getPrice()
-	lastrequest = time.Now().Format("15:04:05")
+	now := time.Now()
+	lastrequest = now.Format("15:04:05")
 	if err == nil {
 		if len(arr) > 0 && price != arr[len(arr)-1] || len(arr) == 0 {
-			lastupdate = time.Now().Format("15:04:05")
+			lastupdate = now.Format("15:04:05")
 			arr = append(arr, price)
+			date = append(date, float64(now.Unix()))
 			fmt.Printf("\x1b[0;0H56.36 * 10000 + 56.53 * 10000 + %.2f * %.2f = %s ", price, val, formatNumber(fixedpart+price*val, " "))
 			last := 0
 			if len(arr) > limit {
@@ -148,7 +151,6 @@ func formatNumber(i float64, divider string) string {
 
 func render(imageWidth, imageHeight int) *bytes.Buffer {
 	var (
-		x        []float64
 		min, max float64
 	)
 
@@ -157,14 +159,13 @@ func render(imageWidth, imageHeight int) *bytes.Buffer {
 
 	min = arr[0]
 	max = arr[0]
-	for i, e := range arr {
+	for _, e := range arr {
 		if max < e {
 			max = e
 		}
 		if min > e {
 			min = e
 		}
-		x = append(x, float64(i))
 	}
 
 	series = append(series, chart.ContinuousSeries{
@@ -174,7 +175,7 @@ func render(imageWidth, imageHeight int) *bytes.Buffer {
 			FillColor:   drawing.Color{R: 255, G: 0, B: 0, A: 255},
 		},
 		YValues: arr,
-		XValues: x,
+		XValues: date,
 	})
 
 	graph := chart.Chart{
@@ -186,6 +187,18 @@ func render(imageWidth, imageHeight int) *bytes.Buffer {
 				Left:   0,
 				Right:  0,
 				Bottom: 0,
+			},
+		},
+		XAxis: chart.XAxis{
+			Style: chart.Style{
+				Show:     true,
+				FontSize: 7.0,
+			},
+			TickPosition: chart.TickPositionBetweenTicks,
+			ValueFormatter: func(v interface{}) string {
+				typed := v.(float64)
+				typedDate := time.Unix(0, int64(typed)*1000000000)
+				return fmt.Sprintf("%.2d:%.2d", typedDate.Hour(), typedDate.Minute())
 			},
 		},
 		YAxis: chart.YAxis{
