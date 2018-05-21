@@ -218,7 +218,7 @@ func render(imageWidth, imageHeight int) *bytes.Buffer {
 			},
 			Range: &chart.ContinuousRange{
 				Max: max + .1,
-				Min: min + .1,
+				Min: min - .1,
 			},
 		},
 		Series: series,
