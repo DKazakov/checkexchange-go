@@ -26,6 +26,7 @@ do
         if [ $? == 0 ]
         then
             echo "build ok!"
+            mv ./checkexchange ~/bin/
         else
             echo "build error!"
         fi
