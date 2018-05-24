@@ -73,8 +73,8 @@ loop:
 func nextIteration(width, height int) {
 	const (
 		limit     = 1
-		fixedpart = 1189740.0
-		val       = 9266.7
+		fixedpart = 1447903.28
+		val       = 5000.0
 	)
 
 	price, err := getPrice()
@@ -85,7 +85,7 @@ func nextIteration(width, height int) {
 			lastupdate = now.Format("15:04:05")
 			arr = append(arr, price)
 			date = append(date, float64(now.Unix()))
-			fmt.Printf("\x1b[0;0H56.36 * 10000 + 56.53 * 10000 + 60.84 * 1000 + %.2f * %.2f = %s ", price, val, formatNumber(fixedpart+price*val, " "))
+			fmt.Printf("\x1b[0;0H56.36 * 10000 + 56.53 * 10000 + 60.84 * 1000 + 60.49 * 3266.71 + 60.56 * 1000 + %.2f * %.2f = %s ", price, val, formatNumber(fixedpart+price*val, " "))
 			last := 0
 			if len(arr) > limit {
 				last = len(arr) - limit
